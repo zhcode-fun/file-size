@@ -1,65 +1,28 @@
-# file-size README
+# file-size
 
-This is the README for your extension "file-size". After writing up a brief description, we recommend including the following sections.
+A simple extension.Show current text file size in the statusbar.
+The status will update when the file is saved or change active tab.
 
-## Features
+# Usage
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+![Usage](https://upload-images.jianshu.io/upload_images/4263081-35dc70d0ae1e8075.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-For example if there is an image subfolder under your extension project workspace:
+# Configurations
 
-\!\[feature X\]\(images/feature-x.png\)
+1. File > Preferences > User Setting (or Workspace Setting)
+1. 文件 > 首选项 > 设置
+2. Add/Modify the these key-value.
+2. 搜索拖入用户设置中覆盖即可
+3. Save.(Will change immediately)
+3. 保存后会立刻产生变化
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+| key                | value      |default|
+| ------------------ |:----------:| -----:|
+| file-size.position | right/left | right |
+| file-size.priority | integer    |   0   |
 
-## Requirements
+> The priority of display in the status bar. Higher value means shown the left.
+> `file-size.priority`的值越大，位置就越向左，api上是这么说的，不过我也没太摸清规律，不起作用就往大了设，我设了100才能在右端最左边显示
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+![Setting.json](https://upload-images.jianshu.io/upload_images/4263081-46fcab9851881710.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
