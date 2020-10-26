@@ -1,37 +1,83 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-const vscode = require('vscode');
+const vscode = require("vscode");
+const fs = require("fs");
+const workspace = vscode.workspace;
+const window = vscode.window;
+const eventCollection = {};
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+function getStatusBar() {
+  const configuration = workspace.getConfiguration("file-size");
+  eventCollection.statusBar = window.createStatusBarItem(
+    configuration.get("position") === "left"
+      ? vscode.StatusBarAlignment.Left
+      : vscode.StatusBarAlignment.Right,
+    configuration.get("priority")
+  );
+  eventCollection.statusBar.show();
+}
 
 /**
- * @param {vscode.ExtensionContext} context
+ * @param {Number} size filesize
  */
-function activate(context) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "file-size" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('file-size.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from file-size!');
-	});
-
-	context.subscriptions.push(disposable);
+function sizeConvert(size) {
+  if (size >= 1048576) return `${Math.floor(size / 10485.76) / 100} MB`;
+  else if (size >= 1024) return `${Math.floor(size / 10.24) / 100} KB`;
+  else return `${size} B`;
 }
+
+/**
+ * @param {import('vscode').TextDocument} doc
+ */
+function updateSize(doc) {
+  const size = fs.statSync(doc.fileName).size;
+  const sizeMan = sizeConvert(size);
+  eventCollection.statusBar.text = sizeMan;
+}
+
+function activate() {
+  getStatusBar();
+  const activeTextEditor = window.activeTextEditor;
+  activeTextEditor && updateSize(activeTextEditor.document);
+  eventCollection.saveTextDocument = workspace.onDidSaveTextDocument((doc) => {
+    const activeTextEditor = window.activeTextEditor;
+    if (
+      activeTextEditor &&
+      activeTextEditor.document.fileName === doc.fileName
+    ) {
+      updateSize(activeTextEditor.document);
+    }
+  });
+  eventCollection.changeActiveTextEditor = window.onDidChangeActiveTextEditor(
+    (textEditor) => {
+      if (textEditor) {
+        updateSize(textEditor.document);
+      } else {
+        eventCollection.statusBar.text = "";
+      }
+    }
+  );
+  eventCollection.changeConfiguration = workspace.onDidChangeConfiguration(
+    () => {
+      eventCollection.statusBar.dispose();
+      getStatusBar();
+      const activeTextEditor = window.activeTextEditor;
+      activeTextEditor && updateSize(activeTextEditor.document);
+    }
+  );
+}
+
 exports.activate = activate;
 
-// this method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() {
+  eventCollection.saveTextDocument &&
+    eventCollection.saveTextDocument.dispose();
+  eventCollection.changeActiveTextEditor &&
+    eventCollection.changeActiveTextEditor.dispose();
+  eventCollection.changeConfiguration &&
+    eventCollection.changeConfiguration.dispose();
+  eventCollection.statusBar.dispose();
+}
 
 module.exports = {
-	activate,
-	deactivate
-}
+  activate,
+  deactivate,
+};

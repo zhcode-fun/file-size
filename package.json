@@ -2,8 +2,8 @@
   "name": "file-size",
   "displayName": "file-size",
   "description": "Show the current text file size in the status bar.",
-	"version": "1.0.0",
-	"publisher": "zh9528",
+  "version": "1.0.0",
+  "publisher": "zh9528",
   "engines": {
     "vscode": "^1.50.0"
   },
@@ -22,7 +22,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:file-size.helloWorld"
+    "*"
   ],
   "license": "MIT",
   "main": "./extension.js",
