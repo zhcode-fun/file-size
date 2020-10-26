@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zh28/file-size"
+    "url": "https://github.com/zhcode-fun/file-size"
   },
   "keywords": [
     "file-size",
@@ -26,11 +26,11 @@
   ],
   "license": "MIT",
   "main": "./extension.js",
-  "icon": "https://raw.githubusercontent.com/zhcode-fun/file-size/master/icon.png",
+  "icon": "icon.png",
   "contributes": {
     "configuration": [
       {
-        "title": "file-size configuration",
+        "title": "file-size",
         "properties": {
           "file-size.position": {
             "type": "string",
