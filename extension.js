@@ -28,9 +28,11 @@ function sizeConvert(size) {
  * @param {import('vscode').TextDocument} doc
  */
 function updateSize(doc) {
-  const size = fs.statSync(doc.fileName).size;
-  const sizeMan = sizeConvert(size);
-  eventCollection.statusBar.text = sizeMan;
+  try {
+    const size = fs.statSync(doc.fileName).size;
+    const sizeMan = sizeConvert(size);
+    eventCollection.statusBar.text = sizeMan;
+  } catch {}
 }
 
 function activate() {
